@@ -43,7 +43,7 @@ def handelUsers():
         try:          
             user_data = usersSchema(**request.json) #the data entered by the user via the API call is passed the usersSchema to validate the inputs 
 
-            # checking if the username already exists in the database
+            #checking if the username already exists in the database
             existing_user = users_coll.find_one({"username": user_data.data["username"]})
             if existing_user:
                 return jsonify({"error": "Username already exists"}), 409 
@@ -51,8 +51,8 @@ def handelUsers():
             users_coll.insert_one(user_data.return_data())
 
             return jsonify({"message" : str("Data inserted"), "userID" :user_data.return_data()["userID"] }), 201 #the user id is
-            # passed to the frontend so that if the user reaches another route the userid can be submitted and fetch the relative
-            # data. OR can be done by validating the user and providing the session token instead of the userID.
+            #passed to the frontend so that if the user reaches another route the userid can be submitted and fetch the relative
+            #data. OR can be done by validating the user and providing the session token instead of the userID.
         except ValueError as e :
             return jsonify({ "error" : str(e)}), 400
         except PyMongoError :
@@ -69,7 +69,7 @@ def handelUserID(userid):
     if not re.match(r"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4[a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$", userid):
         return jsonify({"error": "Invalid user ID format"}), 400
     if request.method == "GET":
-        user_data = users_coll.find_one({"userID": userid}) # fetches the user data with the user
+        user_data = users_coll.find_one({"userID": userid}) #fetches the user data with the user
         user_data.pop("_id", None)
         user_data.pop("password", None)
         if user_data:
