@@ -7,10 +7,11 @@ CO RIDER ASSESMENT
         bcrypt to hash the users passwords
         usersSchema is a class which constructs the schema
 '''
-from flask import Flask, request , jsonify, render_template, redirect, flash, url_for
+from flask import Flask, request , jsonify, render_template, redirect, url_for
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 import os 
+import re
 import bcrypt
 from dotenv import load_dotenv
 
@@ -42,7 +43,7 @@ def handelUsers():
         try:          
             user_data = usersSchema(**request.json) #the data entered by the user via the API call is passed the usersSchema to validate the inputs 
 
-            # Check if the username already exists
+            # checking if the username already exists in the database
             existing_user = users_coll.find_one({"username": user_data.data["username"]})
             if existing_user:
                 return jsonify({"error": "Username already exists"}), 409 
@@ -65,6 +66,8 @@ def handelUsers():
 '''
 @app.route("/users/<userid>", methods=["GET", "PUT", "DELETE"])
 def handelUserID(userid):
+    if not re.match(r"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4[a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$", userid):
+        return jsonify({"error": "Invalid user ID format"}), 400
     if request.method == "GET":
         user_data = users_coll.find_one({"userID": userid})
         if user_data:
@@ -160,7 +163,6 @@ def login():
                 return redirect(url_for('login'))
 
         except ValueError as e:
-            flash(f"Validation Error: {str(e)}", 'error')
             return redirect(url_for('login'))
 
 
