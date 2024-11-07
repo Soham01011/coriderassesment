@@ -69,7 +69,9 @@ def handelUserID(userid):
     if not re.match(r"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4[a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$", userid):
         return jsonify({"error": "Invalid user ID format"}), 400
     if request.method == "GET":
-        user_data = users_coll.find_one({"userID": userid})
+        user_data = users_coll.find_one({"userID": userid}) # fetches the user data with the user
+        user_data.pop("_id", None)
+        user_data.pop("password", None)
         if user_data:
             return jsonify(user_data), 200
         else:
