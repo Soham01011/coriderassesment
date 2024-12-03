@@ -8,20 +8,23 @@ update_user_route = Blueprint("update_user", __name__)
 
 @update_user_route.route("/users/<id>", methods=['PUT'])
 def update_user(id):
+    '''
+        Function to update the user data:
+        (the api call will send the id in the route and detial in the json)
+        - Parse the user inputs to UserUpdate schema for sanitization
+        - Then search for the user with id and update their details
+        - Return the user data after updations
+    '''
     try:
-        # Parse and validate incoming data
         user_data = UserUpdate(**request.json)
 
-        # Check if the user exists
         existing_user = users_collection.find_one({"id": id})
         if not existing_user:
             return jsonify({"message": "Incorrect ID"}), 404
         
-        # Prepare update data and update the user
         update_data = user_data.dict(exclude_unset=True)
         result = users_collection.update_one({"id": id}, {"$set": update_data})
 
-        # Confirm the update was successful
         if result.modified_count == 1:
             updated_user = users_collection.find_one({"id": id})
             if updated_user:
@@ -31,9 +34,7 @@ def update_user(id):
             return jsonify({"message": "No changes were made"}), 400
 
     except ValidationError as e:
-        # Handle validation errors
         return jsonify({"error": e.errors()}), 400
 
     except Exception as e:
-        # Handle any unexpected errors
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500

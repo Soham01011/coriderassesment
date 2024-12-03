@@ -1,6 +1,10 @@
 import uuid
 
 class UserModel:
+    '''
+        User model to store the attributes in the required format 
+        of the collection
+    '''
     def __init__(self, username: str, password: str, email: str):
 
         self.id = str(uuid.uuid4())

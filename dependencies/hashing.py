@@ -6,4 +6,4 @@ def hash_password(password: str)-> str:
     return hashed_pwd.decode('utf-8')
 
 def verify_password(password: str)-> str:
-    pass
+    pass # password verification if login was there

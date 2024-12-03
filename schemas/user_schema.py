@@ -2,6 +2,11 @@ import uuid
 from typing import Optional
 from pydantic import EmailStr, BaseModel, Field
 
+'''
+    Creating schemas to validation the input and format the outputs
+    for each inputs and outputs
+'''
+
 class UserCreateRequest(BaseModel):
     id: str  = str(uuid.uuid4())
     username: str = Field(..., pattern=r'^[a-zA-Z]{2,15}$')

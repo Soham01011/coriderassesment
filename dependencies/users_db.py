@@ -11,7 +11,7 @@ from pymongo import MongoClient, errors
 from bson import ObjectId
 import logging
 
-MONGO_URI = "mongodb://localhost:27017"
+MONGO_URI = "mongodb://mongo:27017"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

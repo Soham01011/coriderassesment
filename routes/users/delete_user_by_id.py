@@ -1,10 +1,15 @@
 from flask import Blueprint, jsonify
-from dependencies.users_db import users_collection
+from dependencies.users_db import users_collection #importing the database connection package
 
 delete_user_by_id = Blueprint('delete_user', __name__)
 
 @delete_user_by_id.route('/users/<id>', methods=['DELETE'])
 def delete_user(id):
+    '''
+        Deleting the user by ID:
+        - Checks if the user exists with the id
+        - If uesr is present then delete it 
+    '''
     try:
         # Check if user exists
         existing_user = users_collection.find_one({"id": id})
