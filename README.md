@@ -74,7 +74,7 @@ After spinning up the containers or running locally on the server you test it by
 
 2] Get user (GET):    /users
 
-3] Get user by id (GET): /users/<id>
+3] Get user by id (GET): /users/id
 ```json
   {
     "username": "john_doe_updated",
@@ -83,9 +83,9 @@ After spinning up the containers or running locally on the server you test it by
   }
 ```
 
-4] Delete user by id (DELETE): /users/<id>
+4] Delete user by id (DELETE): /users/id
 
-5] Update user details by id (PUT): /users/<id>
+5] Update user details by id (PUT): /users/id
 ```json
 {
   "username": "john_doe_updated",
